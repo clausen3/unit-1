@@ -1,6 +1,9 @@
 //initialize function called when the script loads
 function initialize(){
 	cities();
+	// jQueryAjax();
+	debugAjax();
+
 };
 
 //function to create a table with cities and their populations
@@ -111,9 +114,13 @@ function addEvents(){
 			} else {
 				color += ")";
 		};
+	};
     //Table is given a color based on the css of the RGB value
 		$(this).css('color', color);
-	};  //removed ")"
+	});
+
+
+
 
   //The popup function
 	function clickme(){
@@ -122,8 +129,48 @@ function addEvents(){
 	};
   //The popup is displayed when the user clicks on the table
 	$('table').on('click', clickme);
-}); //added this
+
 };
+
+
+//The JqueryAjax method, which isn't being called anywhere
+function jQueryAjax(){
+    //define a variable to hold the data
+    var mydata;
+
+    //basic jQuery ajax method
+    $.ajax("data/MegaCities.geojson", {
+        dataType: "json",
+        success: function(response){
+            mydata = response;
+
+            //check the data
+            console.log(mydata);           // CAN access
+
+        }
+    });
+
+    //check the data
+    console.log(mydata);                   // CANNOT access
+};
+
+//AJAX call which takkes the file MegaCities and the json file extension
+function debugAjax(){
+ //var mydata;
+	$.ajax("data/MegaCities.geojson", {
+		dataType: "json",
+		success: function(response){
+
+			debugCallback(response);
+		}
+	});
+};
+
+//The callback
+function debugCallback(response){
+	$(mydiv).append('<br>GeoJSON data:<br> ' + JSON.stringify(response));
+};
+
 
 //call the initialize function when the document has loaded
 $(document).ready(initialize);
